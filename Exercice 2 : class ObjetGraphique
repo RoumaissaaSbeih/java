@@ -1,0 +1,216 @@
+
+public abstract class ObjetGraphique {
+    protected int x, y;
+
+    public ObjetGraphique() {
+        this.x = 0;
+        this.y = 0;
+    }
+
+    public ObjetGraphique(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public ObjetGraphique(ObjetGraphique obj) {
+        this.x = obj.x;
+        this.y = obj.y;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public void deplacer(int dx, int dy) {
+        this.x += dx;
+        this.y += dy;
+    }
+
+    public abstract void affiche();
+}
+
+public class Rectangle extends ObjetGraphique {
+    protected double largeur, hauteur;
+
+    public Rectangle() {
+        super();
+        this.largeur = 0;
+        this.hauteur = 0;
+    }
+
+    public Rectangle(int x, int y, double largeur, double hauteur) {
+        super(x, y);
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+    }
+
+    public Rectangle(Rectangle rect) {
+        super(rect);
+        this.largeur = rect.largeur;
+        this.hauteur = rect.hauteur;
+    }
+
+    public double getLargeur() {
+        return largeur;
+    }
+
+    public double getHauteur() {
+        return hauteur;
+    }
+
+    public void setTaille(double largeur, double hauteur) {
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+    }
+
+    public void setObjetGraphique(int x, int y, double largeur, double hauteur) {
+        setPosition(x, y);
+        setTaille(largeur, hauteur);
+    }
+
+    @Override
+    public void affiche() {
+        System.out.println("Rectangle: Position=(" + x + ", " + y + "), Largeur=" + largeur + ", Hauteur=" + hauteur);
+    }
+}
+
+public class Bouton extends Rectangle {
+    private String text;
+
+    public Bouton() {
+        super();
+        this.text = "";
+    }
+
+    public Bouton(int x, int y, double largeur, double hauteur, String text) {
+        super(x, y, largeur, hauteur);
+        this.text = text;
+    }
+
+    public Bouton(Bouton bouton) {
+        super(bouton);
+        this.text = bouton.text;
+    }
+
+    public String getText() {
+        return text;
+    }
+
+    public void setText(String text) {
+        this.text = text;
+    }
+
+    @Override
+    public void affiche() {
+        System.out.println("Bouton: Position=(" + x + ", " + y + "), Largeur=" + largeur + ", Hauteur=" + hauteur + ", Texte=\"" + text + "\"");
+    }
+}
+
+public class Cercle extends ObjetGraphique {
+    private double rayon;
+
+    public Cercle() {
+        super();
+        this.rayon = 0;
+    }
+
+    public Cercle(int x, int y, double rayon) {
+        super(x, y);
+        this.rayon = rayon;
+    }
+
+    public Cercle(Cercle cercle) {
+        super(cercle);
+        this.rayon = cercle.rayon;
+    }
+
+    public double getRayon() {
+        return rayon;
+    }
+
+    public void setRayon(double rayon) {
+        this.rayon = rayon;
+    }
+
+    @Override
+    public void affiche() {
+        System.out.println("Cercle: Position=(" + x + ", " + y + "), Rayon=" + rayon);
+    }
+}
+
+public class TestObjetGraphique {
+    public static void main(String[] args) {
+        ObjetGraphique[] objets = new ObjetGraphique[5];
+        objets[0] = new Rectangle(1, 2, 10, 20);
+        objets[1] = new Bouton(3, 4, 15, 25, "OK");
+        objets[2] = new Cercle(5, 6, 7.5);
+        objets[3] = new Rectangle(7, 8, 5, 10);
+        objets[4] = new Bouton(9, 10, 8, 12, "Cancel");
+
+        for (ObjetGraphique obj : objets) {
+            obj.affiche();
+        }
+    }
+}
+
+public class ListeObjetGraphique {
+    private ObjetGraphique[] liste;
+    private int taille;
+    private int index;
+
+    public ListeObjetGraphique(int taille) {
+        this.taille = taille;
+        this.liste = new ObjetGraphique[taille];
+        this.index = 0;
+    }
+
+    public void ajouter(ObjetGraphique obj) {
+        if (index < taille) {
+            liste[index++] = obj;
+        } else {
+            System.out.println("Liste pleine !");
+        }
+    }
+
+    public void afficheObjetsGraphique() {
+        for (int i = 0; i < index; i++) {
+            liste[i].affiche();
+        }
+    }
+}
+
+public class TestListeObjetGraphique {
+    public static void main(String[] args) {
+        ListeObjetGraphique liste = new ListeObjetGraphique(10);
+        liste.ajouter(new Rectangle(1, 2, 10, 20));
+        liste.ajouter(new Bouton(3, 4, 15, 25, "OK"));
+        liste.ajouter(new Cercle(5, 6, 7.5));
+        liste.afficheObjetsGraphique();
+    }
+}
+
+import java.util.ArrayList;
+import java.util.ListIterator;
+
+public class TestArrayList {
+    public static void main(String[] args) {
+        ArrayList<ObjetGraphique> objets = new ArrayList<>();
+        objets.add(new Rectangle(1, 2, 10, 20));
+        objets.add(new Bouton(3, 4, 15, 25, "OK"));
+        objets.add(new Cercle(5, 6, 7.5));
+
+        ListIterator<ObjetGraphique> it = objets.listIterator();
+        while (it.hasNext()) {
+            it.next().affiche();
+        }
+    }
+}
