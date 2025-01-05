@@ -1,0 +1,163 @@
+import java.util.ArrayList;
+ interface VendableKilo {
+    double vendre(double quantite);
+}
+ interface VendablePiece {
+    double vendre(int quantite);
+}
+interface Solde {
+    void lanceSolde(double pourcentage);
+    void termineSolde(double pourcentage);
+}
+abstract class Article {
+    protected double prixAchat;
+    protected double prixVente;
+    protected String nom;
+    protected String fournisseur;
+
+    public Article(String nom, String fournisseur, double prixAchat, double prixVente) {
+        this.nom = nom;
+        this.fournisseur = fournisseur;
+        this.prixAchat = prixAchat;
+        this.prixVente = prixVente;
+    }
+
+    public double rendement() {
+        return ((prixVente - prixAchat) / prixAchat) * 100;
+    }
+
+    @Override
+    public String toString() {
+        return "Article: " + nom + ", Fournisseur: " + fournisseur +
+               ", Prix d'achat: " + prixAchat + ", Prix de vente: " + prixVente +
+               ", Rendement: " + rendement() + "%";
+    }
+}
+class ArticleElectromenager extends Article implements VendablePiece, Solde {
+    private int stock;
+
+    public ArticleElectromenager(String nom, String fournisseur, double prixAchat, double prixVente) {
+        super(nom, fournisseur, prixAchat, prixVente);
+        this.stock = 0; // Stock initial vide
+    }
+
+    public void remplirStock(int quantite) {
+        this.stock += quantite;
+    }
+
+    @Override
+    public double vendre(int quantite) {
+        if (quantite > stock) {
+            System.out.println("Stock insuffisant pour " + nom);
+            return 0;
+        }
+        stock -= quantite;
+        return quantite * prixVente;
+    }
+
+    @Override
+    public void lanceSolde(double pourcentage) {
+        prixVente -= prixVente * (pourcentage / 100);
+    }
+
+    @Override
+    public void termineSolde(double pourcentage) {
+        prixVente += prixVente * (pourcentage / 100);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Stock: " + stock;
+    }
+}
+class ArticlePrimeur extends Article implements VendableKilo {
+    private double stock;
+
+    public ArticlePrimeur(String nom, String fournisseur, double prixAchat, double prixVente) {
+        super(nom, fournisseur, prixAchat, prixVente);
+        this.stock = 0; // Stock initial vide
+    }
+
+    public void remplirStock(double quantite) {
+        this.stock += quantite;
+    }
+
+    @Override
+    public double vendre(double quantite) {
+        if (quantite > stock) {
+            System.out.println("Stock insuffisant pour " + nom);
+            return 0;
+        }
+        stock -= quantite;
+        return quantite * prixVente;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + ", Stock: " + stock + " kg";
+    }
+}
+class Magasin {
+    public double depense;
+    public double revenu;
+    public ArrayList<ArticleElectromenager> electromenagers;
+    public ArrayList<ArticlePrimeur> primeurs;
+
+    public Magasin() {
+        this.depense = 0;
+        this.revenu = 0;
+        this.electromenagers = new ArrayList<>();
+        this.primeurs = new ArrayList<>();
+    }
+
+    public void ajouterArticle(ArticleElectromenager article) {
+        electromenagers.add(article);
+        depense += article.prixAchat * article.rendement(); // Exemple de calcul
+    }
+
+    public void ajouterArticle(ArticlePrimeur article) {
+        primeurs.add(article);
+        depense += article.prixAchat * article.rendement();
+    }
+
+    public double rendement() {
+        return (revenu - depense) / depense * 100;
+    }
+
+    @Override
+    public String toString() {
+        return "Magasin: Dépense=" + depense + ", Revenu=" + revenu + ", Rendement=" + rendement() + "%";
+    }
+}
+public class TestMagasin {
+    public static void main(String[] args) {
+        Magasin magasin = new Magasin();
+
+        ArticleElectromenager tv = new ArticleElectromenager("TV", "Samsung", 3000, 4000);
+        ArticleElectromenager fridge = new ArticleElectromenager("Fridge", "LG", 5000, 6500);
+        ArticlePrimeur apples = new ArticlePrimeur("Apples", "Local Farmer", 2, 3);
+
+
+        tv.remplirStock(10);
+        fridge.remplirStock(5);
+        apples.remplirStock(100);
+
+     
+        magasin.ajouterArticle(tv);
+        magasin.ajouterArticle(fridge);
+        magasin.ajouterArticle(apples);
+
+
+        double revenuTV = tv.vendre(2);
+        double revenuFridge = fridge.vendre(1);
+        double revenuApples = apples.vendre(20);
+
+        magasin.revenu += revenuTV + revenuFridge + revenuApples;
+
+        System.out.println(tv);
+        System.out.println(fridge);
+        System.out.println(apples);
+        System.out.println(magasin);
+    }
+}
+
