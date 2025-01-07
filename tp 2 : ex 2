@@ -1,0 +1,94 @@
+class Employe {
+    private String matricule;
+    private String nom;
+    private String prenom;
+    private int anneeNaissance;
+    private int anneeEmbauche;
+    private double salaire;
+
+    public Employe(String matricule, String nom, String prenom, int anneeNaissance, int anneeEmbauche, double salaire) {
+        this.matricule = matricule;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.anneeNaissance = anneeNaissance;
+        this.anneeEmbauche = anneeEmbauche;
+        this.salaire = salaire;
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
+
+    public String getNom() {
+        return nom;
+    }
+
+    public void setNom(String nom) {
+        this.nom = nom;
+    }
+
+    public String getPrenom() {
+        return prenom;
+    }
+
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
+    }
+
+    public int getAnneeNaissance() {
+        return anneeNaissance;
+    }
+
+    public void setAnneeNaissance(int anneeNaissance) {
+        this.anneeNaissance = anneeNaissance;
+    }
+
+    public int getAnneeEmbauche() {
+        return anneeEmbauche;
+    }
+
+    public void setAnneeEmbauche(int anneeEmbauche) {
+        this.anneeEmbauche = anneeEmbauche;
+    }
+
+    public double getSalaire() {
+        return salaire;
+    }
+
+    public void setSalaire(double salaire) {
+        this.salaire = salaire;
+    }
+
+    public int getAnciennete() {
+        return 2025 - anneeEmbauche;
+    }
+
+    public int getAge() {
+        return 2025 - anneeNaissance;
+    }
+
+    public void augmentationDuSalaire() {
+        int anciennete = getAnciennete();
+        if (anciennete < 5) {
+            salaire *= 1.02;
+        } else if (anciennete < 10) {
+            salaire *= 1.05;
+        } else {
+            salaire *= 1.10;
+        }
+    }
+
+    public void afficherEmploye() {
+        System.out.println("Matricule: " + matricule + ", Nom: " + nom + ", Prénom: " + prenom + ", Age: " + getAge() + ", Ancienneté: " + getAnciennete() + " ans, Salaire: " + salaire);
+    }
+
+    public static void main(String[] args) {
+        Employe employe = new Employe("123", "Dupont", "Jean", 1990, 2015, 2500);
+        employe.augmentationDuSalaire();
+        employe.afficherEmploye();
+    }
+}
