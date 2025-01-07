@@ -1,0 +1,127 @@
+class Document {
+    private String numero;
+    private String titre;
+
+    public Document(String numero, String titre) {
+        this.numero = numero;
+        this.titre = titre;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public String toString() {
+        return "Document Numero: " + numero + ", Titre: " + titre;
+    }
+}
+
+class Livre extends Document {
+    private String auteur;
+    private int nombrePages;
+
+    public Livre(String numero, String titre, String auteur, int nombrePages) {
+        super(numero, titre);
+        this.auteur = auteur;
+        this.nombrePages = nombrePages;
+    }
+
+    public String getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(String auteur) {
+        this.auteur = auteur;
+    }
+
+    public int getNombrePages() {
+        return nombrePages;
+    }
+
+    public void setNombrePages(int nombrePages) {
+        this.nombrePages = nombrePages;
+    }
+
+    public String toString() {
+        return super.toString() + ", Auteur: " + auteur + ", Nombre de Pages: " + nombrePages;
+    }
+}
+
+class Dictionnaire extends Document {
+    private String langue;
+    private int nombreTomes;
+
+    public Dictionnaire(String numero, String titre, String langue, int nombreTomes) {
+        super(numero, titre);
+        this.langue = langue;
+        this.nombreTomes = nombreTomes;
+    }
+
+    public String getLangue() {
+        return langue;
+    }
+
+    public void setLangue(String langue) {
+        this.langue = langue;
+    }
+
+    public int getNombreTomes() {
+        return nombreTomes;
+    }
+
+    public void setNombreTomes(int nombreTomes) {
+        this.nombreTomes = nombreTomes;
+    }
+
+    public String toString() {
+        return super.toString() + ", Langue: " + langue + ", Nombre de Tomes: " + nombreTomes;
+    }
+}
+
+class ListeDeDocuments {
+    private ArrayList<Document> documents = new ArrayList<>();
+
+    public void ajouterDocument(Document doc) {
+        documents.add(doc);
+    }
+
+    public void tousLesAuteurs() {
+        for (Document doc : documents) {
+            if (doc instanceof Livre) {
+                System.out.println(((Livre) doc).getAuteur());
+            }
+        }
+    }
+
+    public void tousLesDocuments() {
+        for (Document doc : documents) {
+            System.out.println(doc.toString());
+        }
+    }
+}
+
+class Bibliotheque {
+    public static void main(String[] args) {
+        Livre livre = new Livre("1", "Le Petit Prince", "Antoine de Saint-Exupéry", 100);
+        Dictionnaire dictionnaire = new Dictionnaire("2", "Dictionnaire Français", "Français", 3);
+
+        ListeDeDocuments liste = new ListeDeDocuments();
+        liste.ajouterDocument(livre);
+        liste.ajouterDocument(dictionnaire);
+
+        liste.tousLesAuteurs();
+        liste.tousLesDocuments();
+    }
+}
