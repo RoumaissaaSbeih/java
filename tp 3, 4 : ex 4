@@ -1,0 +1,73 @@
+import java.util.ArrayList;
+
+class Figure {
+    private int abscisse;
+    private int ordonnee;
+    private int couleur;
+    private static ArrayList<Figure> instances = new ArrayList<>();
+
+    public Figure(int abscisse, int ordonnee, int couleur) {
+        this.abscisse = abscisse;
+        this.ordonnee = ordonnee;
+        this.couleur = couleur;
+        instances.add(this);
+    }
+
+    public static ArrayList<Figure> getInstances() {
+        return instances;
+    }
+
+    public String toString() {
+        return "Figure [abscisse=" + abscisse + ", ordonnee=" + ordonnee + ", couleur=" + couleur + "]";
+    }
+}
+
+class Carre extends Figure {
+    private int longueur;
+
+    public Carre(int abscisse, int ordonnee, int couleur, int longueur) {
+        super(abscisse, ordonnee, couleur);
+        this.longueur = longueur;
+    }
+
+    @Override
+    public static ArrayList<Figure> getInstances() {
+        ArrayList<Figure> carreInstances = new ArrayList<>();
+        for (Figure f : Figure.getInstances()) {
+            if (f instanceof Carre) {
+                carreInstances.add(f);
+            }
+        }
+        return carreInstances;
+    }
+
+    public String toString() {
+        return super.toString() + ", Longueur: " + longueur;
+    }
+}
+
+class Rectangle extends Figure {
+    private int longueur;
+    private int largeur;
+
+    public Rectangle(int abscisse, int ordonnee, int couleur, int longueur, int largeur) {
+        super(abscisse, ordonnee, couleur);
+        this.longueur = longueur;
+        this.largeur = largeur;
+    }
+
+    @Override
+    public static ArrayList<Figure> getInstances() {
+        ArrayList<Figure> rectangleInstances = new ArrayList<>();
+        for (Figure f : Figure.getInstances()) {
+            if (f instanceof Rectangle) {
+                rectangleInstances.add(f);
+            }
+        }
+        return rectangleInstances;
+    }
+
+    public String toString() {
+        return super.toString() + ", Longueur: " + longueur + ", Largeur: " + largeur;
+    }
+}
